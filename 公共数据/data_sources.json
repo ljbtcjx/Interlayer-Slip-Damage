@@ -1,0 +1,27 @@
+{
+  "release": "CP2K v2025.2",
+  "download_date": "2026-10-20",
+  "files": {
+    "BASIS_MOLOPT": {
+      "url": "https://raw.githubusercontent.com/cp2k/cp2k/v2025.2/data/BASIS_MOLOPT",
+      "bytes": 127679,
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    },
+    "GTH_POTENTIALS": {
+      "url": "https://raw.githubusercontent.com/cp2k/cp2k/v2025.2/data/GTH_POTENTIALS",
+      "bytes": 168128,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "dftd3.dat": {
+      "url": "https://raw.githubusercontent.com/cp2k/cp2k/v2025.2/data/dftd3.dat",
+      "bytes": 1959318,
+      "sha256": "1f5041914fb3a7fa6c97602d82da6cb9129c1c1dba675db23522de9c2837dafd"
+    },
+    "POTENTIAL": {
+      "url": "https://raw.githubusercontent.com/cp2k/cp2k/v2025.2/data/GTH_POTENTIALS",
+      "bytes": 168128,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+      "note": "Byte-identical alias for legacy edge inputs"
+    }
+  }
+}

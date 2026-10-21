@@ -1,0 +1,120 @@
+! Finite smooth interface; grip +Z displacement = 3.2 angstrom.
+! Coordinates for loading steps depend on preceding converged relaxation.
+&GLOBAL
+  PROJECT Smooth_Relax_16
+  RUN_TYPE GEO_OPT
+  PRINT_LEVEL MEDIUM
+  PREFERRED_FFT_LIBRARY FFTSG
+&END GLOBAL
+&FORCE_EVAL
+  METHOD Quickstep
+  &DFT
+    BASIS_SET_FILE_NAME BASIS_MOLOPT
+    POTENTIAL_FILE_NAME GTH_POTENTIALS
+    WFN_RESTART_FILE_NAME Smooth_Relax_15-RESTART.wfn
+    CHARGE 0
+    UKS TRUE
+    MULTIPLICITY 1
+    &QS
+      EPS_DEFAULT 1.0E-12
+    &END QS
+    &MGRID
+      CUTOFF [Ry] 400
+      REL_CUTOFF [Ry] 60
+    &END MGRID
+    &POISSON
+      PERIODIC NONE
+      POISSON_SOLVER WAVELET
+    &END POISSON
+    &SCF
+      MAX_SCF 200
+      EPS_SCF 1.0E-6
+      SCF_GUESS RESTART
+      IGNORE_CONVERGENCE_FAILURE FALSE
+      ADDED_MOS 100
+      &DIAGONALIZATION
+        ALGORITHM STANDARD
+      &END DIAGONALIZATION
+      &SMEAR
+        METHOD FERMI_DIRAC
+        ! Numerical electronic smearing; this is not a 300 K ionic MD run.
+        ELECTRONIC_TEMPERATURE [K] 300
+      &END SMEAR
+      &MIXING
+        METHOD BROYDEN_MIXING
+        ALPHA 0.1
+        NBROYDEN 8
+      &END MIXING
+      &OUTER_SCF
+        MAX_SCF 10
+        EPS_SCF 1.0E-6
+      &END OUTER_SCF
+      &PRINT
+        &RESTART ON
+        &END RESTART
+      &END PRINT
+    &END SCF
+    &XC
+      &XC_FUNCTIONAL PBE
+      &END XC_FUNCTIONAL
+      &VDW_POTENTIAL
+        POTENTIAL_TYPE PAIR_POTENTIAL
+        &PAIR_POTENTIAL
+          TYPE DFTD3(BJ)
+          PARAMETER_FILE_NAME dftd3.dat
+          REFERENCE_FUNCTIONAL PBE
+        &END PAIR_POTENTIAL
+      &END VDW_POTENTIAL
+    &END XC
+  &END DFT
+  &SUBSYS
+    &CELL
+      ABC [angstrom] 40 35 47
+      PERIODIC NONE
+    &END CELL
+    &TOPOLOGY
+      COORD_FILE_FORMAT XYZ
+      COORD_FILE_NAME step_16.xyz
+    &END TOPOLOGY
+    &KIND C
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q4
+    &END KIND
+    &KIND Si
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q4
+    &END KIND
+  &END SUBSYS
+&END FORCE_EVAL
+
+&MOTION
+  &GEO_OPT
+    TYPE MINIMIZATION
+    OPTIMIZER BFGS
+    MAX_ITER 300
+    ! CP2K force components in Hartree/bohr; equivalent to 0.02 eV/angstrom.
+    MAX_FORCE 3.889380762298E-04
+    RMS_FORCE 2.0E-4
+    MAX_DR 3.0E-3
+    RMS_DR 1.5E-3
+  &END GEO_OPT
+  &CONSTRAINT
+    &FIXED_ATOMS
+      COMPONENTS_TO_FIX XYZ
+      LIST 6 12 18 24 30 35 36 41 42 48 54 59 60 66 71
+      LIST 72 78 84 90 96 152 158 164 170 176 182 188 194 200 206
+      LIST 212 218 224 230 236 242
+      LIST 125 126 133 134 139 140 143 144 145 146
+    &END FIXED_ATOMS
+  &END CONSTRAINT
+  &PRINT
+    &TRAJECTORY ON
+      FORMAT XYZ
+      FILENAME =trajectory_16.xyz
+      ADD_LAST NUMERIC
+      &EACH
+        GEO_OPT 1
+      &END EACH
+    &END TRAJECTORY
+  &END PRINT
+&END MOTION
